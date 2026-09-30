@@ -102,8 +102,8 @@ const out = {
   contracts,
   payments,
   settings: {
-    promptpayId: '0826822551',
-    promptpayName: 'ณัฏฐนิชา ปุณประวัติ',
+    promptpayId: '0812345678',
+    promptpayName: 'ชื่อผู้รับเงิน',
     lateFeePerDay: 50,
     collectionFee: 100,
   },

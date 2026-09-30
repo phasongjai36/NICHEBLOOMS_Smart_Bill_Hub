@@ -55,7 +55,7 @@ console.log('— bill text —');
     customer: { id: 'c1', name: 'ทดสอบ' },
     items: [{ contractId: 'x', item: 'Ipad', period: 2, totalPeriods: 12, monthly: 1264, overdueDays: 3, lateFee: 150, collectionFee: 100, totalDue: 1514 }],
     total: 1514,
-    promptPayId: '0812345678', promptPayDisplay: '082-682-2551', payeeName: 'ณัฏฐนิชา',
+    promptPayId: '0812345678', promptPayDisplay: '081-234-5678', payeeName: 'ชื่อผู้รับเงิน',
     qrPayload: null, qrError: null, issueDate: '2026-09-30',
   };
   const text = billMessageText(bill);
