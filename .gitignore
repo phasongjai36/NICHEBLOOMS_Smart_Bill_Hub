@@ -26,3 +26,6 @@ Thumbs.db
 
 # Auth session caches
 *.token
+
+# User billing exports — contain real customer data
+*.csv
