@@ -6,6 +6,11 @@
   "scripts": {
     "dev": "tsx server.ts",
     "start": "tsx server.ts",
-    "lint": "tsx .runtime/tsx-cli.mjs node_modules/typescript/bin/tsc --noEmit"
+    "lint": "tsx .runtime/tsx-cli.mjs node_modules/typescript/bin/tsc --noEmit",
+    "test": "tsx tests/domain.test.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "tsx": "^4.19.0"
   }
 }
