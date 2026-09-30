@@ -111,8 +111,8 @@ const out = {
   contracts,
   payments,
   settings: {
-    promptpayId: '0826822551',
-    promptpayName: 'ณัฏฐนิชา ปุณประวัติ',
+    promptpayId: process.env.PROMPTPAY_ID || 'REPLACE_ME',
+    promptpayName: process.env.PROMPTPAY_NAME || 'REPLACE_ME',
     lateFeePerDay: 50,
     collectionFee: 100,
   },
