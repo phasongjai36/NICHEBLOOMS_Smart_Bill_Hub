@@ -1,0 +1,35 @@
+name: CI — code check before merge
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
+      - name: Unit tests
+        run: npx tsx tests/domain.test.ts
+
+      - name: Security scan
+        run: |
+          echo "=== hardcoded secret patterns ==="
+          grep -rnE "(api_key|secret|password|passwd|token)\s*[:=]\s*'[^']{6,}'" --include='*.ts' --include='*.tsx' server/ src/ || true
+          echo "=== eval/exec ==="
+          grep -rnE '\beval\(|\bexec\(' --include='*.ts' --include='*.tsx' --include='*.mjs' server/ src/ .runtime/ || true
+
+      - name: Audit dependencies
+        run: npm audit --omit=dev
