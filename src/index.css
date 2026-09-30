@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Anuphan", "IBM Plex Sans Thai", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Inter", ui-monospace, monospace;
+
+  /* NicheBlooms brand — warm ink background, gold accent */
+  --color-ink-950: #12100c;
+  --color-ink-900: #17150f;
+  --color-ink-800: #201d15;
+  --color-ink-700: #2a261c;
+  --color-ink-600: #3a3425;
+
+  --color-gold-200: #f3e5c3;
+  --color-gold-300: #e8d3a2;
+  --color-gold-400: #d9b96c;
+  --color-gold-500: #c8a04d;
+  --color-gold-600: #a8813f;
+
+  --color-cream-50: #faf6ec;
+  --color-cream-100: #f7f1e4;
+
+  --color-ok-400: #6fcf97;
+  --color-ok-600: #3e9e68;
+  --color-warn-400: #e8b04b;
+  --color-danger-400: #e06c5c;
+  --color-danger-500: #c94f3f;
+}
+
+@layer base {
+  html {
+    font-size: 16px;
+  }
+  body {
+    @apply font-sans bg-ink-900 text-cream-50 antialiased;
+  }
+  ::selection {
+    background: rgba(217, 185, 108, 0.35);
+  }
+}
+
+@layer utilities {
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(247, 241, 228, 0.14);
+    border-radius: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}

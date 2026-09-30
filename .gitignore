@@ -1,0 +1,28 @@
+# Node
+node_modules/
+dist/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env & secrets — NEVER commit
+.env
+.env.*
+!.env.example
+
+# Data: contains customer info + auth hashes
+data/
+!data/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Auth session caches
+*.token
