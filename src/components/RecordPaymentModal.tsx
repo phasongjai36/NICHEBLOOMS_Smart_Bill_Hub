@@ -66,7 +66,7 @@ export default function RecordPaymentModal({ request, onClose, onDone }: {
       <div className="relative z-10 w-full max-w-md rounded-2xl border border-ink-600 bg-ink-800 shadow-2xl overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b border-ink-700">
           <h3 className="font-semibold text-sm">รับเงินค่างวด</h3>
-          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/5 text-cream-50/50"><X className="w-4 h-4" /></button>
+          <button onClick={onClose} aria-label="ปิดหน้าต่างรับเงิน" className="p-1.5 rounded-lg hover:bg-white/5 text-cream-50/50"><X className="w-4 h-4" /></button>
         </div>
 
         {done ? (

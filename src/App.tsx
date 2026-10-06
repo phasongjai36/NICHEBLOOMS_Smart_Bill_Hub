@@ -82,6 +82,7 @@ export default function App() {
                 clearToken();
                 setAuthed(false);
               }}
+              aria-label="ออกจากระบบ"
               className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-cream-50/50 hover:text-cream-50 hover:bg-white/5 transition-colors"
               title="ออกจากระบบ"
             >
@@ -97,6 +98,7 @@ export default function App() {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
+              aria-label={t.label}
               className={cn(
                 'flex-1 min-w-20 flex flex-col items-center gap-1 py-2 text-[11px]',
                 tab === t.id ? 'text-gold-300 border-b-2 border-gold-400' : 'text-cream-50/50'

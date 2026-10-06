@@ -157,7 +157,7 @@ function CustomerDetailPanel({ id, onClose, onChanged }: { id: string; onClose: 
                 <button onClick={() => setNewContract(true)} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gold-400 text-ink-900 text-xs font-semibold hover:bg-gold-300">
                   <Plus className="w-3.5 h-3.5" /> สัญญาใหม่
                 </button>
-                <button onClick={onClose} className="p-2 rounded-lg hover:bg-white/5 text-cream-50/50"><X className="w-4 h-4" /></button>
+                <button onClick={onClose} aria-label="ปิดรายละเอียดลูกค้า" className="p-2 rounded-lg hover:bg-white/5 text-cream-50/50"><X className="w-4 h-4" /></button>
               </div>
             </div>
 
