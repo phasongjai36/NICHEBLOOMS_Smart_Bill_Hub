@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Loader2, CalendarDays } from 'lucide-react';
 import { api, NewContractInput } from '../lib/api';
 import { baht, thDate } from '../lib/utils';
@@ -32,6 +32,14 @@ export default function NewContractModal({ customerId, onClose, onDone }: {
     return { first, last: lastIso, total: monthly * periods + Number(down) };
   })();
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   const save = async () => {
     setBusy(true);
     setError(null);
@@ -50,7 +58,7 @@ export default function NewContractModal({ customerId, onClose, onDone }: {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="สร้างสัญญาผ่อนใหม่">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       <div className="relative z-10 w-full max-w-md rounded-2xl border border-ink-600 bg-ink-800 shadow-2xl overflow-hidden max-h-[92vh] overflow-y-auto scrollbar-thin">
         <div className="px-5 py-4 border-b border-ink-700">
