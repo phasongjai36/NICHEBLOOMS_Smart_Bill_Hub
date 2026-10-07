@@ -89,18 +89,26 @@ export default function BillModal({ contractId, installmentNos, customerId, onCl
     return () => window.removeEventListener('resize', fit);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   // measure the rendered paper so the scaled wrapper reserves the right height
   useLayoutEffect(() => {
     if (paperRef.current) setPaperH(paperRef.current.offsetHeight);
   }, [data]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="ใบเสร็จ / บิลค่างวด">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       <div className="relative z-10 w-full max-w-lg max-h-[94vh] rounded-2xl border border-ink-600 bg-ink-800 shadow-2xl overflow-hidden flex flex-col">
         <div className="flex items-center justify-between px-5 py-4 border-b border-ink-700">
           <h3 className="font-semibold text-sm">ใบเสร็จ / บิลค่างวด</h3>
-          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/5 text-cream-50/50"><X className="w-4 h-4" /></button>
+          <button onClick={onClose} aria-label="ปิด" className="p-1.5 rounded-lg hover:bg-white/5 text-cream-50/50"><X className="w-4 h-4" /></button>
         </div>
 
         <div className="overflow-y-auto scrollbar-thin px-5 pt-5 flex-1 flex justify-center">

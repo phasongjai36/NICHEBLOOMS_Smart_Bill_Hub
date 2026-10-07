@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Loader2, CheckCircle2, X } from 'lucide-react';
 import { api, NewPaymentInput, PayMethod } from '../lib/api';
 import { baht, thDate, METHOD_LABEL, METHOD_ICON } from '../lib/utils';
@@ -41,6 +41,14 @@ export default function RecordPaymentModal({ request, onClose, onDone }: {
     }).catch(() => { /* defaults stay */ });
   }, [request]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   const submit = async () => {
     setBusy(true);
     setError(null);
@@ -61,12 +69,12 @@ export default function RecordPaymentModal({ request, onClose, onDone }: {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="รับเงินค่างวด">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       <div className="relative z-10 w-full max-w-md rounded-2xl border border-ink-600 bg-ink-800 shadow-2xl overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b border-ink-700">
           <h3 className="font-semibold text-sm">รับเงินค่างวด</h3>
-          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/5 text-cream-50/50"><X className="w-4 h-4" /></button>
+          <button onClick={onClose} aria-label="ปิด" className="p-1.5 rounded-lg hover:bg-white/5 text-cream-50/50"><X className="w-4 h-4" /></button>
         </div>
 
         {done ? (

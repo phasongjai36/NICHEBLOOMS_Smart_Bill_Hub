@@ -123,8 +123,16 @@ function CustomerDetailPanel({ id, onClose, onChanged }: { id: string; onClose: 
   const load = () => api.customer(id).then(setData).catch(() => setData(null));
   useEffect(() => { load(); }, [id]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   return (
-    <div className="fixed inset-0 z-40 flex">
+    <div className="fixed inset-0 z-40 flex" role="dialog" aria-modal="true" aria-label="รายละเอียดลูกค้า">
       <div className="absolute inset-0 bg-black/55 backdrop-blur-sm" onClick={onClose} />
       <div className="relative z-10 ml-auto w-full max-w-2xl h-full bg-ink-900 border-l border-ink-700 flex flex-col shadow-2xl">
         {!data ? (
@@ -157,7 +165,7 @@ function CustomerDetailPanel({ id, onClose, onChanged }: { id: string; onClose: 
                 <button onClick={() => setNewContract(true)} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gold-400 text-ink-900 text-xs font-semibold hover:bg-gold-300">
                   <Plus className="w-3.5 h-3.5" /> สัญญาใหม่
                 </button>
-                <button onClick={onClose} className="p-2 rounded-lg hover:bg-white/5 text-cream-50/50"><X className="w-4 h-4" /></button>
+                <button onClick={onClose} aria-label="ปิด" className="p-2 rounded-lg hover:bg-white/5 text-cream-50/50"><X className="w-4 h-4" /></button>
               </div>
             </div>
 
@@ -303,6 +311,14 @@ function CustomerFormModal({ initial, onClose, onSaved }: { initial: CustomerWit
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   const save = async () => {
     setBusy(true);
     setError(null);
@@ -318,7 +334,7 @@ function CustomerFormModal({ initial, onClose, onSaved }: { initial: CustomerWit
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={initial ? 'แก้ไขลูกค้า' : 'เพิ่มลูกค้าใหม่'}>
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       <div className="relative z-10 w-full max-w-md rounded-2xl border border-ink-600 bg-ink-800 shadow-2xl p-5 space-y-3">
         <h3 className="font-semibold text-sm">{initial ? 'แก้ไขลูกค้า' : 'เพิ่มลูกค้าใหม่'}</h3>
