@@ -50,11 +50,22 @@ export default function CustomersPage() {
           <div className="col-span-full text-center text-sm text-cream-50/40 py-16">ไม่พบลูกค้า — เพิ่มลูกค้าคนแรกได้เลย</div>
         )}
         {filtered.map((c) => (
-          <button
+          <div
             key={c.id}
+            role="button"
+            tabIndex={0}
             onClick={() => setSelected(c.id)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                if (e.target === e.currentTarget) {
+                  e.preventDefault();
+                  setSelected(c.id);
+                }
+              }
+            }}
+            aria-label={`ดูรายละเอียดลูกค้า ${c.name}`}
             className={cn(
-              'text-left rounded-2xl border p-4 transition-colors hover:border-gold-400/40',
+              'text-left rounded-2xl border p-4 transition-colors hover:border-gold-400/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 cursor-pointer',
               c.overdueCount > 0 ? 'border-danger-500/30 bg-danger-500/[0.06]' : 'border-ink-700 bg-ink-800'
             )}
           >
@@ -78,15 +89,17 @@ export default function CustomersPage() {
               <div className="text-lg font-bold tnum">{baht(c.dueTotal)}</div>
             </div>
             {c.dueCount > 0 && (
-              <div
+              <button
+                type="button"
                 onClick={(e) => { e.stopPropagation(); setQuickBill(c.id); }}
-                className="mt-2.5 py-1.5 rounded-lg border border-gold-400/35 text-gold-300 text-[11px] font-semibold text-center hover:bg-gold-400/10 transition-colors"
+                aria-label={`ออกบิลรวม ${c.dueCount} งวด สำหรับ ${c.name}`}
                 title="รวมทุกงวดค้างเป็นใบเสร็จเดียว"
+                className="mt-2.5 w-full py-1.5 rounded-lg border border-gold-400/35 text-gold-300 text-[11px] font-semibold text-center hover:bg-gold-400/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 transition-colors"
               >
                 ออกบิลรวม {c.dueCount} งวด
-              </div>
+              </button>
             )}
-          </button>
+          </div>
         ))}
       </div>
 
