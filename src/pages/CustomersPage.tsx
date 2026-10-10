@@ -32,8 +32,19 @@ export default function CustomersPage() {
           <input
             value={q} onChange={(e) => setQ(e.target.value)}
             placeholder="ค้นหาชื่อ หรือเบอร์โทร…"
-            className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-ink-800 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/50"
+            aria-label="ค้นหาชื่อ หรือเบอร์โทร"
+            className="w-full pl-9 pr-10 py-2.5 rounded-xl bg-ink-800 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/50"
           />
+          {q && (
+            <button
+              type="button"
+              onClick={() => setQ('')}
+              aria-label="ล้างคำค้นหา"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 rounded-lg text-cream-50/40 hover:text-cream-50 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 transition-colors"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
         <button
           onClick={() => setEditing('new')}
