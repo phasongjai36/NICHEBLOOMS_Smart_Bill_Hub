@@ -15,6 +15,7 @@ export default function BillModal({ contractId, installmentNos, customerId, onCl
   const [qr, setQr] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const paperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -52,7 +53,8 @@ export default function BillModal({ contractId, installmentNos, customerId, onCl
   };
 
   const downloadPng = async () => {
-    if (!paperRef.current) return;
+    if (!paperRef.current || isExporting) return;
+    setIsExporting(true);
     try {
       const html2canvas = (await import('html2canvas-pro')).default;
       await document.fonts.ready;
@@ -66,6 +68,8 @@ export default function BillModal({ contractId, installmentNos, customerId, onCl
       a.click();
     } catch (e) {
       console.error(e);
+    } finally {
+      setIsExporting(false);
     }
   };
 
@@ -185,17 +189,31 @@ export default function BillModal({ contractId, installmentNos, customerId, onCl
         {bill && (
           <div className="border-t border-ink-700 bg-ink-800 px-5 py-3">
             <div className="grid grid-cols-3 gap-2">
-              <button onClick={copyText} className={cn(
-                'py-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors',
-                copied ? 'bg-ok-600 text-ink-900' : 'bg-gold-400 text-ink-900 hover:bg-gold-300'
-              )}>
+              <button
+                type="button"
+                onClick={copyText}
+                className={cn(
+                  'py-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400',
+                  copied ? 'bg-ok-600 text-ink-900' : 'bg-gold-400 text-ink-900 hover:bg-gold-300'
+                )}
+              >
                 {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                 {copied ? 'คัดลอกแล้ว' : 'คัดลอกข้อความ'}
               </button>
-              <button onClick={downloadPng} className="py-3 rounded-xl border border-ink-600 text-xs font-medium flex items-center justify-center gap-1.5 hover:bg-white/5">
-                <Download className="w-3.5 h-3.5" /> บันทึก PNG
+              <button
+                type="button"
+                onClick={downloadPng}
+                disabled={isExporting}
+                className="py-3 rounded-xl border border-ink-600 text-xs font-medium flex items-center justify-center gap-1.5 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 disabled:opacity-50 transition-colors"
+              >
+                {isExporting ? <Loader2 className="w-3.5 h-3.5 animate-spin text-gold-400" /> : <Download className="w-3.5 h-3.5" />}
+                {isExporting ? 'กำลังสร้าง PNG...' : 'บันทึก PNG'}
               </button>
-              <button onClick={() => window.print()} className="py-3 rounded-xl border border-ink-600 text-xs font-medium flex items-center justify-center gap-1.5 hover:bg-white/5">
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="py-3 rounded-xl border border-ink-600 text-xs font-medium flex items-center justify-center gap-1.5 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 transition-colors"
+              >
                 <Printer className="w-3.5 h-3.5" /> พิมพ์
               </button>
             </div>
