@@ -28,10 +28,11 @@ export default function CustomersPage() {
     <div className="space-y-4">
       <div className="flex items-center gap-3">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cream-50/35" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cream-50/35" aria-hidden="true" />
           <input
             value={q} onChange={(e) => setQ(e.target.value)}
             placeholder="ค้นหาชื่อ หรือเบอร์โทร…"
+            aria-label="ค้นหาลูกค้า"
             className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-ink-800 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/50"
           />
         </div>
@@ -193,8 +194,14 @@ function CustomerDetailPanel({ id, onClose, onChanged }: { id: string; onClose: 
                   const next = ct.installments.find((i) => i.status !== 'paid');
                   return (
                     <div key={ct.id} className={cn('rounded-xl border', ct.closedAt ? 'border-ink-700 bg-ink-800/50 opacity-70' : 'border-ink-700 bg-ink-800')}>
-                      <button onClick={() => setOpen(isOpen ? null : ct.id)} className="w-full px-4 py-3 flex items-center gap-3 text-left">
-                        <ChevronDown className={cn('w-4 h-4 text-cream-50/40 transition-transform', isOpen && 'rotate-180')} />
+                      <button
+                        type="button"
+                        onClick={() => setOpen(isOpen ? null : ct.id)}
+                        aria-expanded={isOpen}
+                        aria-label={`${isOpen ? 'ซ่อน' : 'แสดง'}รายละเอียดสัญญา ${ct.item}`}
+                        className="w-full px-4 py-3 flex items-center gap-3 text-left"
+                      >
+                        <ChevronDown className={cn('w-4 h-4 text-cream-50/40 transition-transform', isOpen && 'rotate-180')} aria-hidden="true" />
                         <div className="flex-1 min-w-0">
                           <div className="text-sm font-medium">{ct.item} {ct.closedAt && <span className="text-[10px] text-cream-50/40">· ปิดแล้ว</span>}</div>
                           <div className="text-[11px] text-cream-50/45 tnum">{baht(ct.monthlyAmount)}/เดือน · {ct.totalPeriods} งวด · จ่ายแล้ว {paid}/{ct.totalPeriods}{next ? ` · งวดถัดไป ${thDate(next.dueDate)}` : ' · ครบทุกงวด'}</div>
