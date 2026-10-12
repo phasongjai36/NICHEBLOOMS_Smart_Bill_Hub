@@ -49,12 +49,12 @@ export default function HistoryPage() {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-3">
-        <select value={month} onChange={(e) => setMonth(e.target.value)}
+        <select value={month} onChange={(e) => setMonth(e.target.value)} aria-label="เลือกเดือน"
           className="px-3 py-2.5 rounded-xl bg-ink-800 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/50">
           <option value="">ทุกเดือน</option>
           {months.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
         </select>
-        <select value={customerId} onChange={(e) => setCustomerId(e.target.value)}
+        <select value={customerId} onChange={(e) => setCustomerId(e.target.value)} aria-label="เลือกลูกค้า"
           className="px-3 py-2.5 rounded-xl bg-ink-800 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/50">
           <option value="">ลูกค้าทุกคน</option>
           {customers.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -98,7 +98,9 @@ export default function HistoryPage() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <button
+                      type="button"
                       title="ย้อนการชำระ (งวดกลับไปค้าง)"
+                      aria-label={`ย้อนการชำระใบเสร็จ ${r.receiptNo}`}
                       onClick={async () => {
                         if (confirm(`ย้อนการชำระ ${r.receiptNo}? งวดจะกลับไปเป็นค้างชำระ`)) {
                           await api.deletePayment(r.id);
@@ -107,7 +109,7 @@ export default function HistoryPage() {
                       }}
                       className="p-2 rounded-lg text-cream-50/30 hover:text-danger-400 hover:bg-danger-400/10 transition-colors"
                     >
-                      <RotateCcw className="w-3.5 h-3.5" />
+                      <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
                     </button>
                   </td>
                 </tr>

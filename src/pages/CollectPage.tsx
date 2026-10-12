@@ -54,10 +54,10 @@ export default function CollectPage() {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-3">
         <div className="flex items-center gap-2 text-sm">
-          <CalendarDays className="w-4 h-4 text-gold-400" />
+          <CalendarDays className="w-4 h-4 text-gold-400" aria-hidden="true" />
           <span className="text-cream-50/60">งวดเดือน</span>
         </div>
-        <select value={month} onChange={(e) => setMonth(e.target.value)}
+        <select value={month} onChange={(e) => setMonth(e.target.value)} aria-label="เลือกงวดเดือน"
           className="px-3 py-2.5 rounded-xl bg-ink-800 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/50">
           {months.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
         </select>
