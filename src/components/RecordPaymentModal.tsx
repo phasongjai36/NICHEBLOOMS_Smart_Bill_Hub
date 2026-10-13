@@ -74,7 +74,7 @@ export default function RecordPaymentModal({ request, onClose, onDone }: {
       <div className="relative z-10 w-full max-w-md rounded-2xl border border-ink-600 bg-ink-800 shadow-2xl overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b border-ink-700">
           <h3 className="font-semibold text-sm">รับเงินค่างวด</h3>
-          <button onClick={onClose} aria-label="ปิด" className="p-1.5 rounded-lg hover:bg-white/5 text-cream-50/50"><X className="w-4 h-4" /></button>
+          <button onClick={onClose} aria-label="ปิด" className="p-1.5 rounded-lg hover:bg-white/5 text-cream-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"><X className="w-4 h-4" /></button>
         </div>
 
         {done ? (
@@ -123,18 +123,21 @@ export default function RecordPaymentModal({ request, onClose, onDone }: {
             </div>
 
             <div>
-              <span className="text-xs text-cream-50/55">วิธีชำระ</span>
-              <div className="mt-1.5 grid grid-cols-4 gap-2">
+              <span id="payment-method-label" className="text-xs text-cream-50/55">วิธีชำระ</span>
+              <div role="radiogroup" aria-labelledby="payment-method-label" className="mt-1.5 grid grid-cols-4 gap-2">
                 {METHODS.map((m) => (
                   <button
                     key={m}
+                    type="button"
+                    role="radio"
+                    aria-checked={method === m}
                     onClick={() => setMethod(m)}
                     className={cn(
-                      'py-2 rounded-xl text-xs border transition-colors',
-                      method === m ? 'border-gold-400/60 bg-gold-400/10 text-gold-300' : 'border-ink-600 text-cream-50/55 hover:bg-white/5'
+                      'py-2 rounded-xl text-xs border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400',
+                      method === m ? 'border-gold-400/60 bg-gold-400/10 text-gold-300 font-semibold' : 'border-ink-600 text-cream-50/55 hover:bg-white/5'
                     )}
                   >
-                    <span className="mr-1">{METHOD_ICON[m]}</span>{METHOD_LABEL[m]}
+                    <span className="mr-1" aria-hidden="true">{METHOD_ICON[m]}</span>{METHOD_LABEL[m]}
                   </button>
                 ))}
               </div>
