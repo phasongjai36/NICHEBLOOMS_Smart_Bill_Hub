@@ -15,6 +15,7 @@ export default function BillModal({ contractId, installmentNos, customerId, onCl
   const [qr, setQr] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [downloading, setDownloading] = useState(false);
   const paperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -52,7 +53,8 @@ export default function BillModal({ contractId, installmentNos, customerId, onCl
   };
 
   const downloadPng = async () => {
-    if (!paperRef.current) return;
+    if (!paperRef.current || downloading) return;
+    setDownloading(true);
     try {
       const html2canvas = (await import('html2canvas-pro')).default;
       await document.fonts.ready;
@@ -66,6 +68,8 @@ export default function BillModal({ contractId, installmentNos, customerId, onCl
       a.click();
     } catch (e) {
       console.error(e);
+    } finally {
+      setDownloading(false);
     }
   };
 
@@ -108,7 +112,7 @@ export default function BillModal({ contractId, installmentNos, customerId, onCl
       <div className="relative z-10 w-full max-w-lg max-h-[94vh] rounded-2xl border border-ink-600 bg-ink-800 shadow-2xl overflow-hidden flex flex-col">
         <div className="flex items-center justify-between px-5 py-4 border-b border-ink-700">
           <h3 className="font-semibold text-sm">ใบเสร็จ / บิลค่างวด</h3>
-          <button onClick={onClose} aria-label="ปิด" className="p-1.5 rounded-lg hover:bg-white/5 text-cream-50/50"><X className="w-4 h-4" /></button>
+          <button onClick={onClose} aria-label="ปิด" className="p-1.5 rounded-lg hover:bg-white/5 text-cream-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"><X className="w-4 h-4" /></button>
         </div>
 
         <div className="overflow-y-auto scrollbar-thin px-5 pt-5 flex-1 flex justify-center">
@@ -186,16 +190,21 @@ export default function BillModal({ contractId, installmentNos, customerId, onCl
           <div className="border-t border-ink-700 bg-ink-800 px-5 py-3">
             <div className="grid grid-cols-3 gap-2">
               <button onClick={copyText} className={cn(
-                'py-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors',
+                'py-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400',
                 copied ? 'bg-ok-600 text-ink-900' : 'bg-gold-400 text-ink-900 hover:bg-gold-300'
               )}>
                 {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                 {copied ? 'คัดลอกแล้ว' : 'คัดลอกข้อความ'}
               </button>
-              <button onClick={downloadPng} className="py-3 rounded-xl border border-ink-600 text-xs font-medium flex items-center justify-center gap-1.5 hover:bg-white/5">
-                <Download className="w-3.5 h-3.5" /> บันทึก PNG
+              <button
+                onClick={downloadPng}
+                disabled={downloading}
+                className="py-3 rounded-xl border border-ink-600 text-xs font-medium flex items-center justify-center gap-1.5 hover:bg-white/5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
+              >
+                {downloading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+                {downloading ? 'กำลังบันทึก…' : 'บันทึก PNG'}
               </button>
-              <button onClick={() => window.print()} className="py-3 rounded-xl border border-ink-600 text-xs font-medium flex items-center justify-center gap-1.5 hover:bg-white/5">
+              <button onClick={() => window.print()} className="py-3 rounded-xl border border-ink-600 text-xs font-medium flex items-center justify-center gap-1.5 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400">
                 <Printer className="w-3.5 h-3.5" /> พิมพ์
               </button>
             </div>
