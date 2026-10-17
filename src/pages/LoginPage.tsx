@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Loader2, LockKeyhole } from 'lucide-react';
+import { Loader2, LockKeyhole, Eye, EyeOff } from 'lucide-react';
 
 export default function LoginPage({ onSignedIn }: { onSignedIn: (password: string) => Promise<void> }) {
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -32,13 +33,22 @@ export default function LoginPage({ onSignedIn }: { onSignedIn: (password: strin
           <div className="relative">
             <LockKeyhole className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cream-50/30" />
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               autoFocus
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="รหัสผ่านผู้ใช้เดียว"
-              className="w-full pl-9 pr-3 py-3 rounded-xl bg-ink-900 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/60"
+              className="w-full pl-9 pr-10 py-3 rounded-xl bg-ink-900 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/60"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              aria-label={showPassword ? 'ซ่อนรหัสผ่าน' : 'แสดงรหัสผ่าน'}
+              aria-pressed={showPassword}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-lg text-cream-50/40 hover:text-cream-50/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 transition-colors"
+            >
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
           </div>
           {error && <p className="text-xs text-danger-400">{error}</p>}
           <button
