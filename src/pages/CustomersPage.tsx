@@ -179,7 +179,7 @@ function CustomerDetailPanel({ id, onClose, onChanged }: { id: string; onClose: 
                 <button onClick={() => setNewContract(true)} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gold-400 text-ink-900 text-xs font-semibold hover:bg-gold-300">
                   <Plus className="w-3.5 h-3.5" /> สัญญาใหม่
                 </button>
-                <button onClick={onClose} aria-label="ปิด" className="p-2 rounded-lg hover:bg-white/5 text-cream-50/50"><X className="w-4 h-4" /></button>
+                <button onClick={onClose} aria-label="ปิด" className="p-2 rounded-lg hover:bg-white/5 text-cream-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"><X className="w-4 h-4" /></button>
               </div>
             </div>
 
@@ -364,8 +364,8 @@ function CustomerFormModal({ initial, onClose, onSaved }: { initial: CustomerWit
         <Field label="โน้ต" value={note} onChange={setNote} placeholder="เช่น จ่ายปลายเดือน รอเงินเดือน" />
         {error && <p className="text-xs text-danger-400">{error}</p>}
         <div className="flex gap-2 pt-1">
-          <button onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-ink-600 text-sm hover:bg-white/5">ยกเลิก</button>
-          <button onClick={save} disabled={busy || !name.trim()} className="flex-1 py-2.5 rounded-xl bg-gold-400 text-ink-900 text-sm font-semibold hover:bg-gold-300 disabled:opacity-40 flex items-center justify-center gap-2">
+          <button onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-ink-600 text-sm hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400">ยกเลิก</button>
+          <button onClick={save} disabled={busy || !name.trim()} className="flex-1 py-2.5 rounded-xl bg-gold-400 text-ink-900 text-sm font-semibold hover:bg-gold-300 disabled:opacity-40 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400">
             {busy && <Loader2 className="w-4 h-4 animate-spin" />}บันทึก
           </button>
         </div>
