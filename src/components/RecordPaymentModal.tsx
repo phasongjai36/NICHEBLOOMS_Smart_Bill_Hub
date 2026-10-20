@@ -154,7 +154,7 @@ export default function RecordPaymentModal({ request, onClose, onDone }: {
             <button
               onClick={submit}
               disabled={busy || !(amount > 0)}
-              className="w-full py-3 rounded-xl bg-gold-400 text-ink-900 font-semibold text-sm hover:bg-gold-300 disabled:opacity-40 flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-xl bg-gold-400 text-ink-900 font-semibold text-sm hover:bg-gold-300 disabled:opacity-40 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
             >
               {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
               บันทึกการรับเงิน {baht(amount)}
