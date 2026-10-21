@@ -33,8 +33,18 @@ export default function CustomersPage() {
             value={q} onChange={(e) => setQ(e.target.value)}
             placeholder="ค้นหาชื่อ หรือเบอร์โทร…"
             aria-label="ค้นหาลูกค้า"
-            className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-ink-800 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/50"
+            className="w-full pl-9 pr-9 py-2.5 rounded-xl bg-ink-800 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/50 focus-visible:ring-2 focus-visible:ring-gold-400"
           />
+          {q && (
+            <button
+              type="button"
+              onClick={() => setQ('')}
+              aria-label="ล้างการค้นหา"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-cream-50/40 hover:text-cream-50 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
+            >
+              <X className="w-3.5 h-3.5" aria-hidden="true" />
+            </button>
+          )}
         </div>
         <button
           onClick={() => setEditing('new')}
@@ -48,7 +58,22 @@ export default function CustomersPage() {
       <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-3">
         {customers === null && <div className="col-span-full py-16 flex justify-center"><Loader2 className="w-6 h-6 animate-spin text-gold-400" /></div>}
         {customers !== null && filtered.length === 0 && (
-          <div className="col-span-full text-center text-sm text-cream-50/40 py-16">ไม่พบลูกค้า — เพิ่มลูกค้าคนแรกได้เลย</div>
+          <div className="col-span-full text-center text-sm text-cream-50/40 py-16 space-y-2">
+            {q ? (
+              <>
+                <p>ไม่พบลูกค้าที่ตรงกับ "{q}"</p>
+                <button
+                  type="button"
+                  onClick={() => setQ('')}
+                  className="text-xs text-gold-300 hover:text-gold-200 underline font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 rounded px-1"
+                >
+                  ล้างการค้นหา
+                </button>
+              </>
+            ) : (
+              <p>ไม่พบลูกค้า — เพิ่มลูกค้าคนแรกได้เลย</p>
+            )}
+          </div>
         )}
         {filtered.map((c) => (
           <div
