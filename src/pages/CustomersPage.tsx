@@ -38,7 +38,7 @@ export default function CustomersPage() {
         </div>
         <button
           onClick={() => setEditing('new')}
-          className="ml-auto flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gold-400 text-ink-900 text-sm font-semibold hover:bg-gold-300 transition-colors"
+          className="ml-auto flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gold-400 text-ink-900 text-sm font-semibold hover:bg-gold-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 transition-colors"
         >
           <Plus className="w-4 h-4" /> เพิ่มลูกค้า
         </button>
@@ -171,15 +171,15 @@ function CustomerDetailPanel({ id, onClose, onChanged }: { id: string; onClose: 
                 <button
                   onClick={() => setBillAll(true)}
                   disabled={data.dueCount === 0}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-gold-400/40 text-gold-300 text-xs font-semibold hover:bg-gold-400/10 disabled:opacity-40"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-gold-400/40 text-gold-300 text-xs font-semibold hover:bg-gold-400/10 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
                   title="รวมทุกงวดค้างของลูกค้านี้เป็นใบเสร็จเดียว"
                 >
                   <FileText className="w-3.5 h-3.5" /> ออกบิลรวม ({data.dueCount})
                 </button>
-                <button onClick={() => setNewContract(true)} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gold-400 text-ink-900 text-xs font-semibold hover:bg-gold-300">
+                <button onClick={() => setNewContract(true)} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gold-400 text-ink-900 text-xs font-semibold hover:bg-gold-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400">
                   <Plus className="w-3.5 h-3.5" /> สัญญาใหม่
                 </button>
-                <button onClick={onClose} aria-label="ปิด" className="p-2 rounded-lg hover:bg-white/5 text-cream-50/50"><X className="w-4 h-4" /></button>
+                <button onClick={onClose} aria-label="ปิด" className="p-2 rounded-lg hover:bg-white/5 text-cream-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"><X className="w-4 h-4" /></button>
               </div>
             </div>
 
@@ -233,7 +233,7 @@ function CustomerDetailPanel({ id, onClose, onChanged }: { id: string; onClose: 
                                         ) : (
                                           <button
                                             onClick={() => setPayFor({ contractId: ct.id, item: ct.item, period: inst.no, amount: inst.amount, overdueDays: od, dueDate: inst.dueDate })}
-                                            className="px-2.5 py-1 rounded-lg bg-gold-400/15 text-gold-300 text-[11px] font-semibold hover:bg-gold-400/25"
+                                            className="px-2.5 py-1 rounded-lg bg-gold-400/15 text-gold-300 text-[11px] font-semibold hover:bg-gold-400/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
                                           >
                                             รับเงิน
                                           </button>
@@ -249,18 +249,18 @@ function CustomerDetailPanel({ id, onClose, onChanged }: { id: string; onClose: 
                             <button
                               onClick={() => setBillFor({ contractId: ct.id, periods: next ? [next.no] : [] })}
                               disabled={!next}
-                              className="px-3 py-2 rounded-lg border border-ink-600 text-xs font-medium hover:bg-white/5 disabled:opacity-40"
+                              className="px-3 py-2 rounded-lg border border-ink-600 text-xs font-medium hover:bg-white/5 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
                             >
                               ออกบิลงวดถัดไป
                             </button>
                             {ct.closedAt ? (
-                              <button onClick={async () => { await api.reopenContract(ct.id); load(); }} className="px-3 py-2 rounded-lg border border-ink-600 text-xs hover:bg-white/5">เปิดสัญญาใหม่</button>
+                              <button onClick={async () => { await api.reopenContract(ct.id); load(); }} className="px-3 py-2 rounded-lg border border-ink-600 text-xs hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400">เปิดสัญญาใหม่</button>
                             ) : (
                               <button
                                 onClick={async () => {
                                   if (confirm('ปิดสัญญานี้? (สัญญาจะซ่อนจากบอร์ด แต่ดูประวัติได้)')) { await api.closeContract(ct.id); load(); onChanged(); }
                                 }}
-                                className="px-3 py-2 rounded-lg border border-ink-600 text-xs text-cream-50/55 hover:bg-white/5"
+                                className="px-3 py-2 rounded-lg border border-ink-600 text-xs text-cream-50/55 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
                               >
                                 ปิดสัญญา
                               </button>
@@ -364,8 +364,8 @@ function CustomerFormModal({ initial, onClose, onSaved }: { initial: CustomerWit
         <Field label="โน้ต" value={note} onChange={setNote} placeholder="เช่น จ่ายปลายเดือน รอเงินเดือน" />
         {error && <p className="text-xs text-danger-400">{error}</p>}
         <div className="flex gap-2 pt-1">
-          <button onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-ink-600 text-sm hover:bg-white/5">ยกเลิก</button>
-          <button onClick={save} disabled={busy || !name.trim()} className="flex-1 py-2.5 rounded-xl bg-gold-400 text-ink-900 text-sm font-semibold hover:bg-gold-300 disabled:opacity-40 flex items-center justify-center gap-2">
+          <button onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-ink-600 text-sm hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400">ยกเลิก</button>
+          <button onClick={save} disabled={busy || !name.trim()} className="flex-1 py-2.5 rounded-xl bg-gold-400 text-ink-900 text-sm font-semibold hover:bg-gold-300 disabled:opacity-40 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400">
             {busy && <Loader2 className="w-4 h-4 animate-spin" />}บันทึก
           </button>
         </div>
@@ -380,7 +380,7 @@ export function Field({ label, value, onChange, placeholder, type = 'text' }: an
       <span className="text-xs text-cream-50/55">{label}</span>
       <input
         type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder}
-        className="mt-1 w-full px-3 py-2.5 rounded-xl bg-ink-900 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/60"
+        className="mt-1 w-full px-3 py-2.5 rounded-xl bg-ink-900 border border-ink-600 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus:border-gold-400/60"
       />
     </label>
   );

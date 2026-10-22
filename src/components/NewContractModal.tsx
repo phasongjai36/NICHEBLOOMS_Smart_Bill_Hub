@@ -82,12 +82,12 @@ export default function NewContractModal({ customerId, onClose, onDone }: {
             <div className="flex gap-2">
               {DUE_DAY_PRESETS.map((d) => (
                 <button key={d} onClick={() => setDueDay(d)}
-                  className={cn('flex-1 py-2.5 rounded-xl text-sm border tnum', dueDay === d ? 'border-gold-400/60 bg-gold-400/10 text-gold-300 font-semibold' : 'border-ink-600 text-cream-50/55 hover:bg-white/5')}>
+                  className={cn('flex-1 py-2.5 rounded-xl text-sm border tnum focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400', dueDay === d ? 'border-gold-400/60 bg-gold-400/10 text-gold-300 font-semibold' : 'border-ink-600 text-cream-50/55 hover:bg-white/5')}>
                   วันที่ {d}
                 </button>
               ))}
               <input type="number" min={1} max={31} value={dueDay} onChange={(e) => setDueDay(Number(e.target.value))}
-                className="w-20 px-3 py-2.5 rounded-xl bg-ink-900 border border-ink-600 text-sm tnum text-center" title="วันอื่น ๆ" />
+                className="w-20 px-3 py-2.5 rounded-xl bg-ink-900 border border-ink-600 text-sm tnum text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus:border-gold-400/60" title="วันอื่น ๆ" />
             </div>
           </L>
           <div className="grid grid-cols-2 gap-3">
@@ -109,9 +109,9 @@ export default function NewContractModal({ customerId, onClose, onDone }: {
 
           {error && <p className="text-xs text-danger-400">{error}</p>}
           <div className="flex gap-2 pt-1">
-            <button onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-ink-600 text-sm hover:bg-white/5">ยกเลิก</button>
+            <button onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-ink-600 text-sm hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400">ยกเลิก</button>
             <button onClick={save} disabled={busy || !item.trim() || !(monthly > 0) || !(periods >= 1)}
-              className="flex-1 py-2.5 rounded-xl bg-gold-400 text-ink-900 text-sm font-semibold hover:bg-gold-300 disabled:opacity-40 flex items-center justify-center gap-2">
+              className="flex-1 py-2.5 rounded-xl bg-gold-400 text-ink-900 text-sm font-semibold hover:bg-gold-300 disabled:opacity-40 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400">
               {busy && <Loader2 className="w-4 h-4 animate-spin" />}สร้างสัญญา
             </button>
           </div>
@@ -121,7 +121,7 @@ export default function NewContractModal({ customerId, onClose, onDone }: {
   );
 }
 
-const inputCls = 'mt-1 w-full px-3 py-2.5 rounded-xl bg-ink-900 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/60';
+const inputCls = 'mt-1 w-full px-3 py-2.5 rounded-xl bg-ink-900 border border-ink-600 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus:border-gold-400/60';
 
 function L({ label, children }: any) {
   return <label className="block"><span className="text-xs text-cream-50/55">{label}</span>{children}</label>;
