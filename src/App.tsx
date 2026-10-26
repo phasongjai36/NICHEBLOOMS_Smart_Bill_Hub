@@ -62,8 +62,9 @@ export default function App() {
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
+                aria-current={tab === t.id ? 'page' : undefined}
                 className={cn(
-                  'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors',
+                  'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400',
                   tab === t.id
                     ? 'bg-gold-400/15 text-gold-300 border border-gold-400/30'
                     : 'text-cream-50/60 hover:text-cream-50 hover:bg-white/5 border border-transparent'
@@ -97,8 +98,9 @@ export default function App() {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
+              aria-current={tab === t.id ? 'page' : undefined}
               className={cn(
-                'flex-1 min-w-20 flex flex-col items-center gap-1 py-2 text-[11px]',
+                'flex-1 min-w-20 flex flex-col items-center gap-1 py-2 text-[11px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400',
                 tab === t.id ? 'text-gold-300 border-b-2 border-gold-400' : 'text-cream-50/50'
               )}
             >

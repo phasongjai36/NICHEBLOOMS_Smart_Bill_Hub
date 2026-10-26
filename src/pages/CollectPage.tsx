@@ -117,12 +117,19 @@ export default function CollectPage() {
                       </td>
                       <td className="px-4 py-2.5">
                         <div className="flex gap-1.5 justify-end">
-                          <button onClick={() => setPayFor(r)}
-                            className="px-2.5 py-1.5 rounded-lg bg-gold-400/15 text-gold-300 text-[11px] font-semibold hover:bg-gold-400/25 flex items-center gap-1">
+                          <button
+                            onClick={() => setPayFor(r)}
+                            aria-label={`รับเงินงวดที่ ${r.period} ของ ${r.customerName}`}
+                            className="px-2.5 py-1.5 rounded-lg bg-gold-400/15 text-gold-300 text-[11px] font-semibold hover:bg-gold-400/25 flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
+                          >
                             <Banknote className="w-3 h-3" /> รับเงิน
                           </button>
-                          <button onClick={() => setBillFor(r)} title="ออกใบเสร็จเฉพาะงวดนี้"
-                            className="px-2.5 py-1.5 rounded-lg border border-ink-600 text-[11px] hover:bg-white/5 flex items-center gap-1">
+                          <button
+                            onClick={() => setBillFor(r)}
+                            title="ออกใบเสร็จเฉพาะงวดนี้"
+                            aria-label={`ออกใบเสร็จงวดที่ ${r.period} ของ ${r.customerName}`}
+                            className="px-2.5 py-1.5 rounded-lg border border-ink-600 text-[11px] hover:bg-white/5 flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
+                          >
                             <FileText className="w-3 h-3" /> บิล
                           </button>
                         </div>
