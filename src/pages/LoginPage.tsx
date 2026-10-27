@@ -28,18 +28,20 @@ export default function LoginPage({ onSignedIn }: { onSignedIn: (password: strin
         <p className="text-sm text-cream-50/45 mt-1">แดชบอร์ดส่วนตัว — ป้อนรหัสผ่านเพื่อเข้าใช้</p>
 
         <div className="mt-6 rounded-2xl border border-ink-600 bg-ink-800 p-5 space-y-3 text-left">
-          <label className="block text-xs text-cream-50/50">รหัสผ่าน</label>
-          <div className="relative">
-            <LockKeyhole className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cream-50/30" />
-            <input
-              type="password"
-              autoFocus
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="รหัสผ่านผู้ใช้เดียว"
-              className="w-full pl-9 pr-3 py-3 rounded-xl bg-ink-900 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/60"
-            />
-          </div>
+          <label className="block">
+            <span className="text-xs text-cream-50/50">รหัสผ่าน</span>
+            <div className="relative mt-1">
+              <LockKeyhole className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cream-50/30" aria-hidden="true" />
+              <input
+                type="password"
+                autoFocus
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="รหัสผ่านผู้ใช้เดียว"
+                className="w-full pl-9 pr-3 py-3 rounded-xl bg-ink-900 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/60"
+              />
+            </div>
+          </label>
           {error && <p className="text-xs text-danger-400">{error}</p>}
           <button
             type="submit"
