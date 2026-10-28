@@ -139,10 +139,18 @@ function QueueCard({ row, overdue, onPay, onBill }: { row: QueueRow; overdue?: b
         </div>
       </div>
       <div className="flex gap-2 mt-2.5">
-        <button onClick={onPay} className="flex-1 py-1.5 rounded-lg bg-gold-400 text-ink-900 text-xs font-semibold hover:bg-gold-300 transition-colors flex items-center justify-center gap-1.5">
+        <button
+          onClick={onPay}
+          aria-label={`รับเงินงวดที่ ${row.period} ของ ${row.customerName}`}
+          className="flex-1 py-1.5 rounded-lg bg-gold-400 text-ink-900 text-xs font-semibold hover:bg-gold-300 transition-colors flex items-center justify-center gap-1.5"
+        >
           <Banknote className="w-3.5 h-3.5" /> รับเงิน
         </button>
-        <button onClick={onBill} className="flex-1 py-1.5 rounded-lg border border-ink-600 text-xs font-medium text-cream-50/70 hover:bg-white/5 transition-colors flex items-center justify-center gap-1.5">
+        <button
+          onClick={onBill}
+          aria-label={`ออกบิลผ่อนงวดที่ ${row.period} ของ ${row.customerName}`}
+          className="flex-1 py-1.5 rounded-lg border border-ink-600 text-xs font-medium text-cream-50/70 hover:bg-white/5 transition-colors flex items-center justify-center gap-1.5"
+        >
           <FileText className="w-3.5 h-3.5" /> ออกบิล
         </button>
       </div>
