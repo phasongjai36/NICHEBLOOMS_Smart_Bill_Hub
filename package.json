@@ -30,6 +30,16 @@
     "react-dom": "^19.3.0",
     "recharts": "^3.10.1",
     "tailwind-merge": "^3.7.0",
-    "vite": "^8.3.1"
+    "vite": "^8.3.3"
+  },
+  "overrides": {
+    "body-parser": "^2.4.0",
+    "qs": "^6.17.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "body-parser": "^2.4.0",
+      "qs": "^6.17.0"
+    }
   }
 }
