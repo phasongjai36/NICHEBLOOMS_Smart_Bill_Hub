@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Loader2, LockKeyhole } from 'lucide-react';
+import { Loader2, LockKeyhole, Eye, EyeOff } from 'lucide-react';
 
 export default function LoginPage({ onSignedIn }: { onSignedIn: (password: string) => Promise<void> }) {
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,17 +29,27 @@ export default function LoginPage({ onSignedIn }: { onSignedIn: (password: strin
         <p className="text-sm text-cream-50/45 mt-1">แดชบอร์ดส่วนตัว — ป้อนรหัสผ่านเพื่อเข้าใช้</p>
 
         <div className="mt-6 rounded-2xl border border-ink-600 bg-ink-800 p-5 space-y-3 text-left">
-          <label className="block text-xs text-cream-50/50">รหัสผ่าน</label>
+          <label htmlFor="login-password" className="block text-xs text-cream-50/50">รหัสผ่าน</label>
           <div className="relative">
-            <LockKeyhole className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cream-50/30" />
+            <LockKeyhole className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cream-50/30" aria-hidden="true" />
             <input
-              type="password"
+              id="login-password"
+              type={showPassword ? 'text' : 'password'}
               autoFocus
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="รหัสผ่านผู้ใช้เดียว"
-              className="w-full pl-9 pr-3 py-3 rounded-xl bg-ink-900 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/60"
+              className="w-full pl-9 pr-10 py-3 rounded-xl bg-ink-900 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/60"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              aria-label={showPassword ? 'ซ่อนรหัสผ่าน' : 'แสดงรหัสผ่าน'}
+              aria-pressed={showPassword}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-cream-50/40 hover:text-cream-50 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 transition-colors"
+            >
+              {showPassword ? <EyeOff className="w-4 h-4" aria-hidden="true" /> : <Eye className="w-4 h-4" aria-hidden="true" />}
+            </button>
           </div>
           {error && <p className="text-xs text-danger-400">{error}</p>}
           <button
