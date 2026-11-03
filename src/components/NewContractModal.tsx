@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Loader2, CalendarDays } from 'lucide-react';
+import { Loader2, CalendarDays, X } from 'lucide-react';
 import { api, NewContractInput } from '../lib/api';
 import { baht, thDate } from '../lib/utils';
 import { cn } from '../lib/utils';
@@ -61,9 +61,19 @@ export default function NewContractModal({ customerId, onClose, onDone }: {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="สร้างสัญญาผ่อนใหม่">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       <div className="relative z-10 w-full max-w-md rounded-2xl border border-ink-600 bg-ink-800 shadow-2xl overflow-hidden max-h-[92vh] overflow-y-auto scrollbar-thin">
-        <div className="px-5 py-4 border-b border-ink-700">
-          <h3 className="font-semibold text-sm">สร้างสัญญาผ่อนใหม่</h3>
-          <p className="text-[11px] text-cream-50/45 mt-0.5">ระบบสร้างตารางงวดอัตโนมัติทุกงวด</p>
+        <div className="flex items-center justify-between px-5 py-4 border-b border-ink-700">
+          <div>
+            <h3 className="font-semibold text-sm">สร้างสัญญาผ่อนใหม่</h3>
+            <p className="text-[11px] text-cream-50/45 mt-0.5">ระบบสร้างตารางงวดอัตโนมัติทุกงวด</p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="ปิด"
+            className="p-1.5 rounded-lg hover:bg-white/5 text-cream-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
         <div className="p-5 space-y-3.5">
           <L label="รายการสินค้า *">
@@ -78,18 +88,36 @@ export default function NewContractModal({ customerId, onClose, onDone }: {
               <input type="number" min={1} max={60} value={periods || ''} onChange={(e) => setPeriods(Number(e.target.value))} className={inputCls} />
             </L>
           </div>
-          <L label="วันครบกำหนดของทุกเดือน *">
-            <div className="flex gap-2">
+          <div>
+            <span id="due-day-label" className="text-xs text-cream-50/55">วันครบกำหนดของทุกเดือน *</span>
+            <div role="radiogroup" aria-labelledby="due-day-label" className="mt-1 flex gap-2">
               {DUE_DAY_PRESETS.map((d) => (
-                <button key={d} onClick={() => setDueDay(d)}
-                  className={cn('flex-1 py-2.5 rounded-xl text-sm border tnum', dueDay === d ? 'border-gold-400/60 bg-gold-400/10 text-gold-300 font-semibold' : 'border-ink-600 text-cream-50/55 hover:bg-white/5')}>
+                <button
+                  key={d}
+                  type="button"
+                  role="radio"
+                  aria-checked={dueDay === d}
+                  onClick={() => setDueDay(d)}
+                  className={cn(
+                    'flex-1 py-2.5 rounded-xl text-sm border tnum transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400',
+                    dueDay === d ? 'border-gold-400/60 bg-gold-400/10 text-gold-300 font-semibold' : 'border-ink-600 text-cream-50/55 hover:bg-white/5'
+                  )}
+                >
                   วันที่ {d}
                 </button>
               ))}
-              <input type="number" min={1} max={31} value={dueDay} onChange={(e) => setDueDay(Number(e.target.value))}
-                className="w-20 px-3 py-2.5 rounded-xl bg-ink-900 border border-ink-600 text-sm tnum text-center" title="วันอื่น ๆ" />
+              <input
+                type="number"
+                min={1}
+                max={31}
+                value={dueDay}
+                onChange={(e) => setDueDay(Number(e.target.value))}
+                aria-label="ระบุวันอื่น ๆ"
+                className="w-20 px-3 py-2.5 rounded-xl bg-ink-900 border border-ink-600 text-sm tnum text-center focus:outline-none focus:border-gold-400/60 focus-visible:ring-2 focus-visible:ring-gold-400"
+                title="วันอื่น ๆ"
+              />
             </div>
-          </L>
+          </div>
           <div className="grid grid-cols-2 gap-3">
             <L label="เงินดาวน์ (ถ้ามี)">
               <input type="number" min={0} value={down || ''} onChange={(e) => setDown(Number(e.target.value))} placeholder="0" className={inputCls} />
