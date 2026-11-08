@@ -13,8 +13,12 @@ export default function CustomersPage() {
   const [selected, setSelected] = useState<string | null>(null);
   const [editing, setEditing] = useState<CustomerWithSummary | 'new' | null>(null);
   const [quickBill, setQuickBill] = useState<string | null>(null); // customerId → บิลรวม
+  const [drawerRefreshKey, setDrawerRefreshKey] = useState(0);
 
-  const refresh = () => api.customers().then(setCustomers).catch(() => setCustomers([]));
+  const refresh = () => {
+    setDrawerRefreshKey((k) => k + 1);
+    return api.customers().then(setCustomers).catch(() => setCustomers([]));
+  };
   useEffect(() => { refresh(); }, []);
 
   const filtered = useMemo(() => {
@@ -141,7 +145,13 @@ export default function CustomersPage() {
 
       {/* detail drawer */}
       {selected && (
-        <CustomerDetailPanel id={selected} onClose={() => setSelected(null)} onChanged={refresh} />
+        <CustomerDetailPanel
+          key={selected + '-' + drawerRefreshKey}
+          id={selected}
+          onClose={() => setSelected(null)}
+          onChanged={refresh}
+          onEdit={(customer) => setEditing(customer)}
+        />
       )}
 
       {/* add/edit customer modal */}
@@ -158,7 +168,7 @@ export default function CustomersPage() {
 
 /* ------------------------------ detail panel ------------------------------ */
 
-function CustomerDetailPanel({ id, onClose, onChanged }: { id: string; onClose: () => void; onChanged: () => void }) {
+function CustomerDetailPanel({ id, onClose, onChanged, onEdit }: { id: string; onClose: () => void; onChanged: () => void; onEdit: (c: CustomerDetail) => void }) {
   const [data, setData] = useState<CustomerDetail | null>(null);
   const [open, setOpen] = useState<string | null>(null); // expanded contract id
   const [newContract, setNewContract] = useState(false);
@@ -200,6 +210,14 @@ function CustomerDetailPanel({ id, onClose, onChanged }: { id: string; onClose: 
                 </div>
               </div>
               <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => onEdit(data)}
+                  aria-label={`แก้ไขข้อมูลลูกค้า ${data.name}`}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-ink-600 text-cream-50/80 text-xs font-semibold hover:text-cream-50 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 transition-colors"
+                >
+                  <Pencil className="w-3.5 h-3.5" aria-hidden="true" /> แก้ไข
+                </button>
                 <button
                   onClick={() => setBillAll(true)}
                   disabled={data.dueCount === 0}
