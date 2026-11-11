@@ -162,6 +162,7 @@ function CustomerDetailPanel({ id, onClose, onChanged }: { id: string; onClose: 
   const [data, setData] = useState<CustomerDetail | null>(null);
   const [open, setOpen] = useState<string | null>(null); // expanded contract id
   const [newContract, setNewContract] = useState(false);
+  const [editingCustomer, setEditingCustomer] = useState(false);
   const [payFor, setPayFor] = useState<{ contractId: string; item: string; period: number; amount: number; overdueDays: number; dueDate: string } | null>(null);
   const [billFor, setBillFor] = useState<{ contractId: string; periods: number[] } | null>(null);
   const [billAll, setBillAll] = useState(false);
@@ -201,17 +202,26 @@ function CustomerDetailPanel({ id, onClose, onChanged }: { id: string; onClose: 
               </div>
               <div className="flex items-center gap-2">
                 <button
+                  onClick={() => setEditingCustomer(true)}
+                  aria-label={`แก้ไขข้อมูลลูกค้า ${data.name}`}
+                  title="แก้ไขข้อมูลลูกค้า"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-ink-600 text-cream-50/70 text-xs font-medium hover:text-cream-50 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 transition-colors"
+                >
+                  <Pencil className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>แก้ไข</span>
+                </button>
+                <button
                   onClick={() => setBillAll(true)}
                   disabled={data.dueCount === 0}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-gold-400/40 text-gold-300 text-xs font-semibold hover:bg-gold-400/10 disabled:opacity-40"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-gold-400/40 text-gold-300 text-xs font-semibold hover:bg-gold-400/10 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 transition-colors"
                   title="รวมทุกงวดค้างของลูกค้านี้เป็นใบเสร็จเดียว"
                 >
                   <FileText className="w-3.5 h-3.5" /> ออกบิลรวม ({data.dueCount})
                 </button>
-                <button onClick={() => setNewContract(true)} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gold-400 text-ink-900 text-xs font-semibold hover:bg-gold-300">
+                <button onClick={() => setNewContract(true)} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gold-400 text-ink-900 text-xs font-semibold hover:bg-gold-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 transition-colors">
                   <Plus className="w-3.5 h-3.5" /> สัญญาใหม่
                 </button>
-                <button onClick={onClose} aria-label="ปิด" className="p-2 rounded-lg hover:bg-white/5 text-cream-50/50"><X className="w-4 h-4" /></button>
+                <button onClick={onClose} aria-label="ปิด" className="p-2 rounded-lg hover:bg-white/5 text-cream-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"><X className="w-4 h-4" /></button>
               </div>
             </div>
 
@@ -342,6 +352,17 @@ function CustomerDetailPanel({ id, onClose, onChanged }: { id: string; onClose: 
       )}
       {billAll && data && (
         <BillModal customerId={data.id} onClose={() => setBillAll(false)} />
+      )}
+      {editingCustomer && data && (
+        <CustomerFormModal
+          initial={data}
+          onClose={() => setEditingCustomer(false)}
+          onSaved={() => {
+            setEditingCustomer(false);
+            load();
+            onChanged();
+          }}
+        />
       )}
     </div>
   );
