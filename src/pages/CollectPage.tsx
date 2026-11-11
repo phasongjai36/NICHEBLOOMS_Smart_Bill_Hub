@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Banknote, FileText, CalendarDays, Loader2 } from 'lucide-react';
+import { Banknote, FileText, CalendarDays, Loader2, RotateCcw } from 'lucide-react';
 import { api, CollectRow, CustomerWithSummary } from '../lib/api';
 import { baht, thDate } from '../lib/utils';
 import { cn } from '../lib/utils';
@@ -9,6 +9,7 @@ import BillModal from '../components/BillModal';
 const DAY_LABEL: Record<number, string> = { 1: 'วันที่ 1', 20: 'วันที่ 20', 25: 'วันที่ 25' };
 
 export default function CollectPage() {
+  const currentMonth = useMemo(() => new Date().toISOString().slice(0, 7), []);
   const [month, setMonth] = useState(() => new Date().toISOString().slice(0, 7));
   const [data, setData] = useState<{ month: string; rows: CollectRow[] } | null>(null);
   const [customers, setCustomers] = useState<CustomerWithSummary[]>([]);
@@ -61,6 +62,18 @@ export default function CollectPage() {
           className="px-3 py-2.5 rounded-xl bg-ink-800 border border-ink-600 text-sm focus:outline-none focus:border-gold-400/50">
           {months.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
         </select>
+        {month !== currentMonth && (
+          <button
+            type="button"
+            onClick={() => setMonth(currentMonth)}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-ink-600 text-xs text-gold-300 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 transition-colors"
+            title="กลับไปเดือนปัจจุบัน"
+            aria-label="กลับไปเดือนปัจจุบัน"
+          >
+            <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
+            <span>เดือนปัจจุบัน</span>
+          </button>
+        )}
         <div className="ml-auto text-sm text-cream-50/60">
           รวม <span className="font-bold text-gold-300 tnum">{baht(grandTotal)}</span> · {data?.rows.length ?? 0} งวด
         </div>
@@ -74,8 +87,9 @@ export default function CollectPage() {
             {billableCustomers.map((c) => (
               <button key={c.id} onClick={() => setGroupBill({ customerId: c.id, name: c.name })}
                 title={`รวมงวดครบกำหนดแล้ว ${c.dueCount} งวดของ ${c.name} เป็นใบเสร็จเดียว (ยอด ${baht(c.dueTotal)})`}
-                className="px-3 py-2 rounded-xl bg-gold-400/15 text-gold-300 text-[11px] font-semibold hover:bg-gold-400/25 border border-gold-400/30 flex items-center gap-1.5 transition-colors">
-                <FileText className="w-3 h-3" /> {c.name} ({c.dueCount} งวด · {baht(c.dueTotal)})
+                aria-label={`ออกบิลรวม ${c.dueCount} งวด สำหรับ ${c.name} ยอด ${baht(c.dueTotal)}`}
+                className="px-3 py-2 rounded-xl bg-gold-400/15 text-gold-300 text-[11px] font-semibold hover:bg-gold-400/25 border border-gold-400/30 flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 transition-colors">
+                <FileText className="w-3 h-3" aria-hidden="true" /> {c.name} ({c.dueCount} งวด · {baht(c.dueTotal)})
               </button>
             ))}
           </div>
@@ -85,7 +99,19 @@ export default function CollectPage() {
       {!data ? (
         <div className="py-16 flex justify-center"><Loader2 className="w-6 h-6 animate-spin text-gold-400" /></div>
       ) : data.rows.length === 0 ? (
-        <div className="text-center text-sm text-cream-50/40 py-16">ไม่มีงวดครบกำหนดในเดือนนี้ 🌸</div>
+        <div className="text-center text-sm text-cream-50/40 py-16 space-y-3">
+          <div>ไม่มีงวดครบกำหนดในเดือนนี้ 🌸</div>
+          {month !== currentMonth && (
+            <button
+              type="button"
+              onClick={() => setMonth(currentMonth)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-ink-600 text-xs text-gold-300 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 transition-colors"
+            >
+              <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
+              กลับไปเดือนปัจจุบัน
+            </button>
+          )}
+        </div>
       ) : (
         grouped.map(([day, rows]) => {
           const dayTotal = rows.reduce((s, r) => s + r.totalDue, 0);
@@ -102,7 +128,7 @@ export default function CollectPage() {
                     <th className="px-4 py-2 font-medium">รายการ</th>
                     <th className="px-4 py-2 font-medium">งวดที่</th>
                     <th className="px-4 py-2 font-medium text-right">ยอดเรียกเก็บ</th>
-                    <th className="px-4 py-2"></th>
+                    <th className="px-4 py-2 text-right"><span className="sr-only">การจัดการ</span></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -117,13 +143,20 @@ export default function CollectPage() {
                       </td>
                       <td className="px-4 py-2.5">
                         <div className="flex gap-1.5 justify-end">
-                          <button onClick={() => setPayFor(r)}
-                            className="px-2.5 py-1.5 rounded-lg bg-gold-400/15 text-gold-300 text-[11px] font-semibold hover:bg-gold-400/25 flex items-center gap-1">
-                            <Banknote className="w-3 h-3" /> รับเงิน
+                          <button
+                            type="button"
+                            onClick={() => setPayFor(r)}
+                            aria-label={`บันทึกรับเงินงวดที่ ${r.period} ของ ${r.customerName} (${r.item})`}
+                            className="px-2.5 py-1.5 rounded-lg bg-gold-400/15 text-gold-300 text-[11px] font-semibold hover:bg-gold-400/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 transition-colors flex items-center gap-1">
+                            <Banknote className="w-3 h-3" aria-hidden="true" /> รับเงิน
                           </button>
-                          <button onClick={() => setBillFor(r)} title="ออกใบเสร็จเฉพาะงวดนี้"
-                            className="px-2.5 py-1.5 rounded-lg border border-ink-600 text-[11px] hover:bg-white/5 flex items-center gap-1">
-                            <FileText className="w-3 h-3" /> บิล
+                          <button
+                            type="button"
+                            onClick={() => setBillFor(r)}
+                            title="ออกใบเสร็จเฉพาะงวดนี้"
+                            aria-label={`ออกบิลงวดที่ ${r.period} ของ ${r.customerName} (${r.item})`}
+                            className="px-2.5 py-1.5 rounded-lg border border-ink-600 text-[11px] hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 transition-colors flex items-center gap-1">
+                            <FileText className="w-3 h-3" aria-hidden="true" /> บิล
                           </button>
                         </div>
                       </td>
