@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Loader2, CalendarDays } from 'lucide-react';
+import { Loader2, CalendarDays, X } from 'lucide-react';
 import { api, NewContractInput } from '../lib/api';
 import { baht, thDate } from '../lib/utils';
 import { cn } from '../lib/utils';
@@ -61,9 +61,14 @@ export default function NewContractModal({ customerId, onClose, onDone }: {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="สร้างสัญญาผ่อนใหม่">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       <div className="relative z-10 w-full max-w-md rounded-2xl border border-ink-600 bg-ink-800 shadow-2xl overflow-hidden max-h-[92vh] overflow-y-auto scrollbar-thin">
-        <div className="px-5 py-4 border-b border-ink-700">
-          <h3 className="font-semibold text-sm">สร้างสัญญาผ่อนใหม่</h3>
-          <p className="text-[11px] text-cream-50/45 mt-0.5">ระบบสร้างตารางงวดอัตโนมัติทุกงวด</p>
+        <div className="flex items-center justify-between px-5 py-4 border-b border-ink-700">
+          <div>
+            <h3 className="font-semibold text-sm">สร้างสัญญาผ่อนใหม่</h3>
+            <p className="text-[11px] text-cream-50/45 mt-0.5">ระบบสร้างตารางงวดอัตโนมัติทุกงวด</p>
+          </div>
+          <button onClick={onClose} aria-label="ปิด" className="p-1.5 rounded-lg hover:bg-white/5 text-cream-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400">
+            <X className="w-4 h-4" />
+          </button>
         </div>
         <div className="p-5 space-y-3.5">
           <L label="รายการสินค้า *">
@@ -109,9 +114,9 @@ export default function NewContractModal({ customerId, onClose, onDone }: {
 
           {error && <p className="text-xs text-danger-400">{error}</p>}
           <div className="flex gap-2 pt-1">
-            <button onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-ink-600 text-sm hover:bg-white/5">ยกเลิก</button>
+            <button onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-ink-600 text-sm hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400">ยกเลิก</button>
             <button onClick={save} disabled={busy || !item.trim() || !(monthly > 0) || !(periods >= 1)}
-              className="flex-1 py-2.5 rounded-xl bg-gold-400 text-ink-900 text-sm font-semibold hover:bg-gold-300 disabled:opacity-40 flex items-center justify-center gap-2">
+              className="flex-1 py-2.5 rounded-xl bg-gold-400 text-ink-900 text-sm font-semibold hover:bg-gold-300 disabled:opacity-40 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400">
               {busy && <Loader2 className="w-4 h-4 animate-spin" />}สร้างสัญญา
             </button>
           </div>
