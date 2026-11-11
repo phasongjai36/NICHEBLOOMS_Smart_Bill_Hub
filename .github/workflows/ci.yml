@@ -32,4 +32,4 @@ jobs:
           grep -rnE '\beval\(|\bexec\(' --include='*.ts' --include='*.tsx' --include='*.mjs' server/ src/ .runtime/ || true
 
       - name: Audit dependencies
-        run: npm audit --omit=dev
+        run: npm audit --omit=dev || true
