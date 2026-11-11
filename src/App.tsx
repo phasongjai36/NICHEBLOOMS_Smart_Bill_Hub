@@ -62,6 +62,7 @@ export default function App() {
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
+                aria-current={tab === t.id ? 'page' : undefined}
                 className={cn(
                   'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors',
                   tab === t.id
@@ -97,6 +98,7 @@ export default function App() {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
+              aria-current={tab === t.id ? 'page' : undefined}
               className={cn(
                 'flex-1 min-w-20 flex flex-col items-center gap-1 py-2 text-[11px]',
                 tab === t.id ? 'text-gold-300 border-b-2 border-gold-400' : 'text-cream-50/50'

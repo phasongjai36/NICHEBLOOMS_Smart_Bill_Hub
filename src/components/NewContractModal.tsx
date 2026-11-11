@@ -81,13 +81,14 @@ export default function NewContractModal({ customerId, onClose, onDone }: {
           <L label="วันครบกำหนดของทุกเดือน *">
             <div className="flex gap-2">
               {DUE_DAY_PRESETS.map((d) => (
-                <button key={d} onClick={() => setDueDay(d)}
+                <button key={d} type="button" onClick={() => setDueDay(d)}
+                  aria-pressed={dueDay === d}
                   className={cn('flex-1 py-2.5 rounded-xl text-sm border tnum', dueDay === d ? 'border-gold-400/60 bg-gold-400/10 text-gold-300 font-semibold' : 'border-ink-600 text-cream-50/55 hover:bg-white/5')}>
                   วันที่ {d}
                 </button>
               ))}
               <input type="number" min={1} max={31} value={dueDay} onChange={(e) => setDueDay(Number(e.target.value))}
-                className="w-20 px-3 py-2.5 rounded-xl bg-ink-900 border border-ink-600 text-sm tnum text-center" title="วันอื่น ๆ" />
+                className="w-20 px-3 py-2.5 rounded-xl bg-ink-900 border border-ink-600 text-sm tnum text-center" title="วันอื่น ๆ" aria-label="วันครบกำหนดของทุกเดือน" />
             </div>
           </L>
           <div className="grid grid-cols-2 gap-3">
